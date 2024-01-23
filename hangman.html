@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="sunwoo.jpg" type="image/x-icon">
+    <title>Hangman Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+
+        #word-display {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        #letters {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hangman Game</h1>
+    <div id="word-display"></div>
+    <div id="letters"></div>
+    <input type="text" id="guessInput" placeholder="Enter a letter">
+    <button onclick="handleGuess()">Guess</button>
+
+    <script>
+        const words = ['javascript', 'hangman', 'developer', 'programming', 'computer', 'web'];
+
+        let selectedWord = '';
+        let guessedWord = [];
+        let incorrectGuesses = [];
+        let maxAttempts = 6;
+
+        // Initialize the game
+        function initializeGame() {
+            selectedWord = words[Math.floor(Math.random() * words.length)];
+            guessedWord = Array(selectedWord.length).fill('_');
+            incorrectGuesses = [];
+            maxAttempts = 6;
+
+            updateDisplay();
+        }
+
+        // Update the display
+        function updateDisplay() {
+            document.getElementById('word-display').textContent = guessedWord.join(' ');
+            document.getElementById('letters').textContent = `Incorrect Guesses: ${incorrectGuesses.join(', ')}`;
+
+            // Check for win or loss
+            if (guessedWord.join('') === selectedWord) {
+                alert('Congratulations! You guessed the word!');
+                initializeGame();
+            } else if (maxAttempts === 0) {
+                alert(`Sorry! You ran out of attempts. The word was: ${selectedWord}`);
+                initializeGame();
+            }
+        }
+
+        // Handle user input (letter guess)
+        function handleGuess() {
+            const guessInput = document.getElementById('guessInput').value.toLowerCase();
+
+            if (!guessInput.match(/[a-z]/)) {
+                alert('Please enter a valid letter.');
+                return;
+            }
+
+            if (selectedWord.includes(guessInput)) {
+                // Correct guess
+                for (let i = 0; i < selectedWord.length; i++) {
+                    if (selectedWord[i] === guessInput) {
+                        guessedWord[i] = guessInput;
+                    }
+                }
+            } else {
+                // Incorrect guess
+                incorrectGuesses.push(guessInput);
+                maxAttempts--;
+            }
+
+            // Clear the input field
+            document.getElementById('guessInput').value = '';
+
+            updateDisplay();
+        }
+
+        // Initialize the game when the page loads
+        window.onload = initializeGame;
+    </script>
+</body>
+</html>

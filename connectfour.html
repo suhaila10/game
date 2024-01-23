@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="sunwoo.jpg" type="image/x-icon">
+    <title>Connect Four Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #connect-four-board {
+            display: grid;
+            grid-template-columns: repeat(7, 60px);
+            gap: 10px;
+            margin-bottom: 20px;
+            margin-top: 20px; /* Add margin-top to center the grid */
+        }
+
+        .cell {
+            width: 60px;
+            height: 60px;
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        #status {
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Connect Four Game</h1>
+    <div id="connect-four-board"></div>
+    <p id="status">Player 1's turn</p>
+
+    <script>
+        const ROWS = 6;
+        const COLUMNS = 7;
+        let board = Array.from({ length: ROWS }, () => Array(COLUMNS).fill(null));
+        let currentPlayer = 1; // 1 for Player 1, 2 for Player 2
+        let gameActive = true;
+
+        function initializeGame() {
+            const connectFourBoard = document.getElementById('connect-four-board');
+            connectFourBoard.innerHTML = '';
+
+            for (let row = 0; row < ROWS; row++) {
+                for (let col = 0; col < COLUMNS; col++) {
+                    const cellElement = document.createElement('div');
+                    cellElement.classList.add('cell');
+                    cellElement.onclick = () => dropPiece(col);
+
+                    connectFourBoard.appendChild(cellElement);
+                }
+            }
+        }
+
+        function dropPiece(column) {
+            if (!gameActive) return;
+
+            const row = findLowestEmptyRow(column);
+            if (row === -1) return;
+
+            board[row][column] = currentPlayer;
+
+            const cellIndex = row * COLUMNS + column;
+            const cellElement = document.getElementsByClassName('cell')[cellIndex];
+            cellElement.textContent = currentPlayer === 1 ? '🔴' : '🟡';
+
+            if (checkForWinner(row, column)) {
+                document.getElementById('status').textContent = `Player ${currentPlayer} wins!`;
+                gameActive = false;
+            } else {
+                currentPlayer = currentPlayer === 1 ? 2 : 1;
+                document.getElementById('status').textContent = `Player ${currentPlayer}'s turn`;
+            }
+        }
+
+        function findLowestEmptyRow(column) {
+            for (let row = ROWS - 1; row >= 0; row--) {
+                if (board[row][column] === null) {
+                    return row;
+                }
+            }
+            return -1; // Column is full
+        }
+
+        function checkForWinner(row, column) {
+            // Check horizontally
+            if (
+                countAdjacentCells(row, column, 0, 1) + countAdjacentCells(row, column, 0, -1) >= 4
+            ) {
+                return true;
+            }
+
+            // Check vertically
+            if (
+                countAdjacentCells(row, column, 1, 0) >= 4
+            ) {
+                return true;
+            }
+
+            // Check diagonally (top-left to bottom-right)
+            if (
+                countAdjacentCells(row, column, 1, 1) + countAdjacentCells(row, column, -1, -1) >= 4
+            ) {
+                return true;
+            }
+
+            // Check diagonally (top-right to bottom-left)
+            if (
+                countAdjacentCells(row, column, 1, -1) + countAdjacentCells(row, column, -1, 1) >= 4
+            ) {
+                return true;
+            }
+
+            return false;
+        }
+
+        function countAdjacentCells(row, column, rowIncrement, colIncrement) {
+            let count = 0;
+            let currentRow = row;
+            let currentColumn = column;
+
+            while (
+                currentRow >= 0 && currentRow < ROWS &&
+                currentColumn >= 0 && currentColumn < COLUMNS &&
+                board[currentRow][currentColumn] === currentPlayer
+            ) {
+                count++;
+                currentRow += rowIncrement;
+                currentColumn += colIncrement;
+            }
+
+            return count;
+        }
+
+        // Initialize the game when the page loads
+        window.onload = initializeGame;
+    </script>
+</body>
+</html>

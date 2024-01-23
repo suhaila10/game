@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="sunwoo.jpg" type="image/x-icon">
+    <title>Simon Says Game</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+
+        #game-board {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .color-button {
+            width: 100px;
+            height: 100px;
+            border: none;
+            cursor: pointer;
+        }
+
+        #start-game {
+            font-size: 18px;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        #sequence-display {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        #result-message {
+            font-size: 20px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Simon Says Game</h1>
+    <div id="game-board"></div>
+    <button id="start-game" onclick="startGame()">Start Game</button>
+    <p id="sequence-display">Simon says...</p>
+    <p id="result-message"></p>
+
+    <script>
+        const colors = ['red', 'green', 'blue', 'yellow'];
+        const gameSequence = [];
+        let playerSequence = [];
+        let isGameActive = false;
+        let round = 1;
+
+        // Initialize the game board
+        function initializeBoard() {
+            const gameBoardElement = document.getElementById('game-board');
+            gameBoardElement.innerHTML = '';
+
+            colors.forEach(color => {
+                const buttonElement = document.createElement('button');
+                buttonElement.classList.add('color-button');
+                buttonElement.style.backgroundColor = color;
+                buttonElement.onclick = () => handleButtonClick(color);
+
+                gameBoardElement.appendChild(buttonElement);
+            });
+        }
+
+        // Handle button click during the game
+        function handleButtonClick(color) {
+            if (isGameActive) {
+                playerSequence.push(color);
+                checkSequence();
+            }
+        }
+
+        // Start the game
+        function startGame() {
+            if (!isGameActive) {
+                isGameActive = true;
+                playerSequence = [];
+                gameSequence.length = 0;
+                round = 1;
+                document.getElementById('sequence-display').textContent = 'Simon says...';
+
+                playRound();
+            }
+        }
+
+        // Play a round of the game
+        function playRound() {
+            setTimeout(() => {
+                addToSequence();
+                displaySequence();
+            }, 1000);
+        }
+
+        // Add a random color to the game sequence
+        function addToSequence() {
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            gameSequence.push(randomColor);
+        }
+
+        // Display the game sequence to the player
+        function displaySequence() {
+            const sequenceDisplay = document.getElementById('sequence-display');
+            sequenceDisplay.textContent = 'Simon says...';
+
+            setTimeout(() => {
+                gameSequence.forEach((color, index) => {
+                    setTimeout(() => {
+                        sequenceDisplay.textContent = color;
+                    }, 1000 * index);
+                });
+
+                setTimeout(() => {
+                    sequenceDisplay.textContent = 'Your turn!';
+                }, 1000 * gameSequence.length);
+
+            }, 1000);
+        }
+
+        // Check if the player's sequence matches the game sequence
+        function checkSequence() {
+            const lastColorIndex = playerSequence.length - 1;
+
+            if (playerSequence[lastColorIndex] !== gameSequence[lastColorIndex]) {
+                endGame('Oops! Wrong sequence. Game over!');
+            } else if (playerSequence.length === gameSequence.length) {
+                // Player completed the round
+                if (round === 5) {
+                    endGame('Congratulations! You completed 5 rounds!');
+                } else {
+                    round++;
+                    playerSequence = [];
+                    playRound();
+                }
+            }
+        }
+
+        // End the game
+        function endGame(message) {
+            isGameActive = false;
+            document.getElementById('sequence-display').textContent = message;
+            document.getElementById('result-message').textContent = '';
+        }
+
+        // Initialize the board when the page loads
+        window.onload = initializeBoard;
+    </script>
+</body>
+</html>

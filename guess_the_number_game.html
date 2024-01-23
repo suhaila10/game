@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="sunwoo.jpg" type="image/x-icon">
+    <title>Guess the Number</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Guess the Number!</h1>
+    <p>I'm thinking of a number between 1 and 100.</p>
+    <input type="number" id="guessInput" placeholder="Enter your guess">
+    <button onclick="checkGuess()">Submit Guess</button>
+    <p id="result"></p>
+
+    <script>
+        // Generate a random number between 1 and 100
+        const secretNumber = Math.floor(Math.random() * 100) + 1;
+        let attempts = 0;
+
+        function checkGuess() {
+            const guessInput = document.getElementById('guessInput');
+            const resultElement = document.getElementById('result');
+            const guess = parseInt(guessInput.value);
+
+            if (isNaN(guess) || guess < 1 || guess > 100) {
+                resultElement.textContent = 'Please enter a valid number between 1 and 100.';
+            } else {
+                attempts++;
+
+                if (guess === secretNumber) {
+                    resultElement.textContent = `Congratulations! You guessed the number in ${attempts} attempts.`;
+                    disableInputAndButton();
+                } else if (guess < secretNumber) {
+                    resultElement.textContent = 'Too low! Try again.';
+                } else {
+                    resultElement.textContent = 'Too high! Try again.';
+                }
+            }
+        }
+
+        function disableInputAndButton() {
+            const guessInput = document.getElementById('guessInput');
+            const submitButton = document.querySelector('button');
+
+            guessInput.disabled = true;
+            submitButton.disabled = true;
+        }
+    </script>
+</body>
+</html>

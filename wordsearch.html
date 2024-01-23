@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="sunwoo.jpg" type="image/x-icon">
+    <title>Word Search Game</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            margin: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #game-board {
+            display: grid;
+            grid-template-columns: repeat(5, 50px);
+            gap: 5px;
+            margin-bottom: 20px;
+        }
+
+        .cell {
+            width: 50px;
+            height: 50px;
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #selected-word {
+            margin-bottom: 20px;
+        }
+
+        #check-word {
+            font-size: 18px;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        #result-message {
+            font-size: 20px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Word Search Game</h1>
+    <div id="game-board"></div>
+    <p id="selected-word">Selected Word: <span id="word"></span></p>
+    <button id="check-word" onclick="checkWord()">Check Word</button>
+    <p id="result-message"></p>
+
+    <script>
+        const boardSize = 5;
+        let gameBoard = [];
+        let selectedWord = '';
+
+        // Initialize the game board
+        function initializeBoard() {
+            const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            gameBoard = [];
+
+            for (let i = 0; i < boardSize; i++) {
+                const row = [];
+                for (let j = 0; j < boardSize; j++) {
+                    const randomLetter = letters[Math.floor(Math.random() * letters.length)];
+                    row.push(randomLetter);
+                }
+                gameBoard.push(row);
+            }
+
+            renderBoard();
+        }
+
+        // Render the game board on the webpage
+        function renderBoard() {
+            const gameBoardElement = document.getElementById('game-board');
+            gameBoardElement.innerHTML = '';
+
+            for (let i = 0; i < boardSize; i++) {
+                for (let j = 0; j < boardSize; j++) {
+                    const cellElement = document.createElement('div');
+                    cellElement.classList.add('cell');
+                    cellElement.textContent = gameBoard[i][j];
+                    cellElement.onclick = () => selectLetter(i, j);
+
+                    gameBoardElement.appendChild(cellElement);
+                }
+            }
+        }
+
+        // Handle click events on the cells
+        function selectLetter(row, col) {
+            const letter = gameBoard[row][col];
+            selectedWord += letter;
+            document.getElementById('word').textContent = selectedWord;
+        }
+
+        // Check if the selected word is valid
+        function checkWord() {
+            const validWords = ['CAT', 'DOG', 'RAT', 'BAT', 'HAT'];
+            const isValid = validWords.includes(selectedWord);
+
+            const resultMessage = document.getElementById('result-message');
+            resultMessage.textContent = isValid ? 'Success! Valid Word.' : 'Oops! Invalid Word.';
+
+            // Clear the selected word
+            selectedWord = '';
+            document.getElementById('word').textContent = '';
+
+            // Render a new board
+            initializeBoard();
+        }
+
+        // Initialize the board when the page loads
+        window.onload = initializeBoard;
+    </script>
+</body>
+</html>

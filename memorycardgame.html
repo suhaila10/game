@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="sunwoo.jpg" type="image/x-icon">
+    <title>Memory Card Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #game-board {
+            display: grid;
+            grid-template-columns: repeat(8, 100px);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            width: 100px;
+            height: 150px;
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Memory Card Game</h1>
+    <div id="game-board"></div>
+    <button onclick="resetGame()">Reset Game</button>
+
+    <script>
+        const cardImages = [
+            '🐶', '🐱', '🐭', '🐹',
+            '🐰', '🦊', '🐻', '🐼',
+            '🐨', '🐯', '🦁', '🐮'
+        ];
+
+        let gameBoard = [];
+        let flippedCards = [];
+
+        // Initialize the game
+        function initializeGame() {
+            gameBoard = [...cardImages, ...cardImages].sort(() => Math.random() - 0.5);
+            flippedCards = Array(gameBoard.length).fill(false);
+            renderBoard();
+        }
+
+        // Render the game board on the webpage
+        function renderBoard() {
+            const gameBoardElement = document.getElementById('game-board');
+            gameBoardElement.innerHTML = '';
+
+            for (let i = 0; i < gameBoard.length; i++) {
+                const cardElement = document.createElement('div');
+                cardElement.classList.add('card');
+                cardElement.textContent = flippedCards[i] ? gameBoard[i] : '';
+                cardElement.onclick = () => flipCard(i);
+
+                gameBoardElement.appendChild(cardElement);
+            }
+        }
+
+        // Flip a card
+        function flipCard(index) {
+            flippedCards[index] = !flippedCards[index];
+
+            if (flippedCards.filter(Boolean).length === 2) {
+                setTimeout(() => checkMatch(), 1000);
+            }
+
+            renderBoard();
+        }
+
+        // Check if the flipped cards match
+        function checkMatch() {
+            const selectedIndices = flippedCards.reduce((acc, isFlipped, index) => {
+                if (isFlipped) acc.push(index);
+                return acc;
+            }, []);
+
+            const selectedCards = selectedIndices.map(index => gameBoard[index]);
+
+            if (selectedCards.every((card, _, arr) => card === arr[0])) {
+                // Match found
+                flippedCards = Array(gameBoard.length).fill(true);
+                checkWin();
+            } else {
+                // No match, flip cards back
+                flippedCards = Array(gameBoard.length).fill(false);
+            }
+
+            renderBoard();
+        }
+
+        // Check for a win
+        function checkWin() {
+            if (flippedCards.every(Boolean)) {
+                alert('Congratulations! You won the game!');
+                resetGame();
+            }
+        }
+
+        // Reset the game
+        function resetGame() {
+            initializeGame();
+        }
+
+        // Initialize the game when the page loads
+        window.onload = initializeGame;
+    </script>
+</body>
+</html>

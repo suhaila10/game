@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="sunwoo.jpg" type="image/x-icon">
+    <title>Simple Match-Three Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(5, 80px);
+            gap: 5px;
+            align-items: center;
+            margin: 0 auto; /* Add this line to center the game board */
+        }
+        .cell {
+            width: 80px;
+            height: 80px;
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Simple Match-Three Game</h1>
+    <div class="game-board" id="gameBoard"></div>
+
+    <script>
+        const boardSize = 5;
+        let gameBoard = [];
+        let selectedRow = null;
+        let selectedCol = null;
+
+        // Initialize the game board
+        function initializeBoard() {
+            const colors = ['red', 'blue', 'green', 'yellow', 'purple'];
+            gameBoard = [];
+
+            for (let i = 0; i < boardSize; i++) {
+                const row = [];
+                for (let j = 0; j < boardSize; j++) {
+                    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                    row.push(randomColor);
+                }
+                gameBoard.push(row);
+            }
+
+            renderBoard();
+        }
+
+        // Render the game board on the webpage
+        function renderBoard() {
+            const gameBoardElement = document.getElementById('gameBoard');
+            gameBoardElement.innerHTML = '';
+
+            for (let i = 0; i < boardSize; i++) {
+                for (let j = 0; j < boardSize; j++) {
+                    const cellElement = document.createElement('div');
+                    cellElement.classList.add('cell');
+                    cellElement.style.backgroundColor = gameBoard[i][j];
+                    cellElement.setAttribute('data-row', i);
+                    cellElement.setAttribute('data-col', j);
+                    cellElement.onclick = handleClick;
+
+                    gameBoardElement.appendChild(cellElement);
+                }
+            }
+        }
+
+        // Handle click events on the cells
+        function handleClick(event) {
+            const clickedRow = parseInt(event.target.getAttribute('data-row'));
+            const clickedCol = parseInt(event.target.getAttribute('data-col'));
+
+            if (selectedRow === null && selectedCol === null) {
+                // No cell selected yet, set the current cell as selected
+                selectedRow = clickedRow;
+                selectedCol = clickedCol;
+            } else {
+                // A cell is already selected, swap the cells
+                swapCells(selectedRow, selectedCol, clickedRow, clickedCol);
+
+                // Reset the selected cell
+                selectedRow = null;
+                selectedCol = null;
+
+                // Re-render the board to reflect the swapped cells
+                renderBoard();
+            }
+        }
+
+        // Swap the colors of two cells
+        function swapCells(row1, col1, row2, col2) {
+            const tempColor = gameBoard[row1][col1];
+            gameBoard[row1][col1] = gameBoard[row2][col2];
+            gameBoard[row2][col2] = tempColor;
+        }
+
+        // Initialize the board when the page loads
+        window.onload = initializeBoard;
+    </script>
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="sunwoo.jpg" type="image/x-icon">
+    <title>Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+         body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #b395b3;
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+            margin: 0;
+            padding: 20px; /* Reduced padding for better mobile view */
+            position: relative;
+            overflow: hidden;
+        }
+
+        h1 {
+            color: black;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .game-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .game-link {
+            margin: 10px;
+            padding: 15px 20px; /* Adjusted padding for better mobile view */
+            font-size: 20px; /* Adjusted font size for better mobile view */
+            text-decoration: none;
+            color: black;
+            background-color: #ff9fa1;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            border: 4px solid #ff7e84;
+            width: 250px; /* Adjusted width for better mobile view */
+        }
+
+        .game-link:hover {
+            background-color: #ff7e84;
+            transform: scale(1.1);
+        }
+
+        .game-link:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #ff7e84, #ff6b6b);
+            opacity: 0.8;
+            z-index: -1;
+            border-radius: 8px;
+        }
+
+        /* Floating hearts animation */
+        .heart {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: url('heart.png') no-repeat center/contain;
+            animation: floatHeart linear infinite;
+            transform-origin: top left;
+        }
+
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-100px) rotate(45deg);
+            }
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+        }
+
+        /* Additional hearts */
+        .heart2,
+        .heart3,
+        .heart4,
+        .heart5,
+        .heart6,
+        .heart7,
+        .heart8,
+        .heart9,
+        .heart10,
+        .heart11,
+        .heart12,
+        .heart13,
+        .heart14,
+        .heart15,
+        .heart16,
+        .heart17,
+        .heart18,
+        .heart19,
+        .heart20,
+        .heart21,
+        .heart22,
+        .heart23,
+        .heart24,
+        .heart25,
+        .heart26,
+        .heart27,
+        .heart28,
+        .heart29,
+        .heart30,
+        .heart31,
+        .heart32,
+        .heart33,
+        .heart34,
+        .heart35,
+        .heart36,
+        .heart37,
+        .heart38,
+        .heart39,
+        .heart40 {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: url('heart.png') no-repeat center/contain;
+            animation: floatHeart linear infinite;
+            transform-origin: top left;
+        }
+
+        @keyframes floatHeart2 {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-150px) rotate(-45deg);
+            }
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+        }
+
+        /* Adjust positions and durations for each heart */
+        .heart2 { top: 40%; left: 50%; animation-duration: 3s; }
+        .heart3 { top: 70%; left: 30%; animation-duration: 4s; }
+        .heart4 { top: 10%; left: 80%; animation-duration: 5s; }
+        .heart5 { top: 60%; left: 20%; animation-duration: 3.5s; }
+        .heart6 { top: 25%; left: 60%; animation-duration: 4.5s; }
+        .heart7 { top: 90%; left: 70%; animation-duration: 3s; }
+        .heart8 { top: 15%; left: 30%; animation-duration: 4s; }
+        .heart9 { top: 50%; left: 80%; animation-duration: 5.5s; }
+        .heart10 { top: 85%; left: 40%; animation-duration: 3.5s; }
+        .heart11 { top: 20%; left: 10%; animation-duration: 4.5s; }
+        .heart12 { top: 70%; left: 60%; animation-duration: 3s; }
+        .heart13 { top: 40%; left: 80%; animation-duration: 5s; }
+        .heart14 { top: 60%; left: 30%; animation-duration: 4s; }
+        .heart15 { top: 25%; left: 50%; animation-duration: 3.5s; }
+        .heart16 { top: 90%; left: 20%; animation-duration: 4s; }
+        .heart17 { top: 15%; left: 70%; animation-duration: 3.5s; }
+        .heart18 { top: 50%; left: 40%; animation-duration: 5.5s; }
+        .heart19 { top: 85%; left: 80%; animation-duration: 3s; }
+        .heart20 { top: 30%; left: 90%; animation-duration: 4s; }
+        .heart21 { top: 80%; left: 15%; animation-duration: 3s; }
+        .heart22 { top: 10%; left: 50%; animation-duration: 5s; }
+        .heart23 { top: 45%; left: 20%; animation-duration: 3.5s; }
+        .heart24 { top: 65%; left: 70%; animation-duration: 4s; }
+        .heart25 { top: 25%; left: 90%; animation-duration: 5.5s; }
+        .heart26 { top: 75%; left: 35%; animation-duration: 3.5s; }
+        .heart27 { top: 15%; left: 80%; animation-duration: 4.5s; }
+        .heart28 { top: 55%; left: 10%; animation-duration: 3s; }
+        .heart29 { top: 90%; left: 50%; animation-duration: 5s; }
+        .heart30 { top: 40%; left: 70%; animation-duration: 4s; }
+        .heart31 { top: 80%; left: 15%; animation-duration: 2s; }
+        .heart32 { top: 10%; left: 50%; animation-duration: 3s; }
+        .heart33 { top: 45%; left: 20%; animation-duration: 3.5s; }
+        .heart34 { top: 65%; left: 70%; animation-duration: 5s; }
+        .heart35 { top: 25%; left: 90%; animation-duration: 6.5s; }
+        .heart36 { top: 75%; left: 35%; animation-duration: 2.5s; }
+        .heart37 { top: 15%; left: 80%; animation-duration: 1.5s; }
+        .heart38 { top: 55%; left: 10%; animation-duration: 2s; }
+        .heart39 { top: 90%; left: 50%; animation-duration: 2s; }
+        .heart40 { top: 40%; left: 70%; animation-duration: 2s; }
+    </style>
+</head>
+<body>
+    <h1>Game Dashboard</h1>
+
+    <div class="game-links">
+        <!-- GAME BUTTON -->
+        <a class="game-link" href="memorycardgame.html" target="_blank">Memory Card Game</a>
+        <a class="game-link" href="guess_the_number_game.html" target="_blank">Number Guessing Game</a>
+        <a class="game-link" href="hangman.html" target="_blank">Hangman</a>
+        <a class="game-link" href="cclooklike.html" target="_blank">CC DUPE</a>
+        <a class="game-link" href="rps.html" target="_blank">Rock, Scissor, Paper</a>
+        <a class="game-link" href="tictactoe.html" target="_blank">TIC TAC TOE</a>
+        <a class="game-link" href="snakegame.html" target="_blank">Snake Game</a>
+        <a class="game-link" href="wam.html" target="_blank">Whack-a-Mole</a>
+        <a class="game-link" href="connectfour.html" target="_blank">Connect Four</a>
+        <a class="game-link" href="simonsays.html" target="_blank">Simon Says</a>
+        <a class="game-link" href="wordsearch.html" target="_blank">Word Search</a>
+
+
+
+
+        <!-- Floating hearts -->
+        <div class="heart" style="top: 20%; left: 20%; animation-duration: 4s;"></div>
+        <div class="heart" style="top: 50%; left: 70%; animation-duration: 3s;"></div>
+        <div class="heart" style="top: 80%; left: 40%; animation-duration: 5s;"></div>
+
+        <!-- Additional hearts -->
+        <div class="heart2" style="animation-duration: 3.5s;"></div>
+        <div class="heart3" style="animation-duration: 4.5s;"></div>
+        <div class="heart4" style="animation-duration: 5s;"></div>
+        <div class="heart5" style="animation-duration: 3.5s;"></div>
+        <div class="heart6" style="animation-duration: 4.5s;"></div>
+        <div class="heart7" style="animation-duration: 3s;"></div>
+        <div class="heart8" style="animation-duration: 4s;"></div>
+        <div class="heart9" style="animation-duration: 5.5s;"></div>
+        <div class="heart10" style="animation-duration: 3.5s;"></div>
+        <div class="heart11" style="animation-duration: 4.5s;"></div>
+        <div class="heart12" style="animation-duration: 3s;"></div>
+        <div class="heart13" style="animation-duration: 5s;"></div>
+        <div class="heart14" style="animation-duration: 4s;"></div>
+        <div class="heart15" style="animation-duration: 3.5s;"></div>
+        <div class="heart16" style="animation-duration: 4s;"></div>
+        <div class="heart17" style="animation-duration: 3.5s;"></div>
+        <div class="heart18" style="animation-duration: 5.5s;"></div>
+        <div class="heart19" style="animation-duration: 3s;"></div>
+        <div class="heart20" style="animation-duration: 4s;"></div>
+        <div class="heart21" style="animation-duration: 3s;"></div>
+        <div class="heart22" style="animation-duration: 5s;"></div>
+        <div class="heart23" style="animation-duration: 3.5s;"></div>
+        <div class="heart24" style="animation-duration: 4s;"></div>
+        <div class="heart25" style="animation-duration: 5.5s;"></div>
+        <div class="heart26" style="animation-duration: 3.5s;"></div>
+        <div class="heart27" style="animation-duration: 4.5s;"></div>
+        <div class="heart28" style="animation-duration: 3s;"></div>
+        <div class "heart29" style="animation-duration: 5s;"></div>
+        <div class="heart30" style="animation-duration: 4s;"></div>
+        <div class="heart31" style="animation-duration: 2s;"></div>
+        <div class="heart32" style="animation-duration: 3s;"></div>
+        <div class="heart33" style="animation-duration: 3.5s;"></div>
+        <div class="heart34" style="animation-duration: 5s;"></div>
+        <div class="heart35" style="animation-duration: 6.5s;"></div>
+        <div class="heart36" style="animation-duration: 2.5s;"></div>
+        <div class="heart37" style="animation-duration: 1.5s;"></div>
+        <div class="heart38" style="animation-duration: 2s;"></div>
+        <div class "heart39" style="animation-duration: 2S;"></div>
+        <div class="heart40" style="animation-duration: 2s;"></div>    
+    </div>
+</body>
+</html>
